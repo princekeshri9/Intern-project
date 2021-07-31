@@ -1,0 +1,68 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+vector<int> topological_sort(vector<int> graph[],int size){
+      vector<int> result; //here we store answer 
+      queue<int> q;
+      vector<int> indegree(size,0); //Here i store indegree of every node
+      //calculate indegree of node......
+      
+      for(int i=0;i<size;i++){
+            for(int j=0;j<graph[i].size();j++){
+                  indegree[graph[i][j]]++;
+            }
+      }
+      
+      // Here i check if indegree of node is zero then we push that node in queue
+      
+      for(int i=0;i<indegree.size();i++){
+            if(indegree[i]==0){
+                  q.push(indegree[i]);
+            }
+      }
+      
+      while(!q.empty()){
+            int v=q.front();
+            q.pop();
+            // Here i add v to result
+            result.push_back(v);
+            // We decrease indegree of all adjacent node of v
+            for(auto it=graph[v].begin();it!=graph[v].end();it++){
+                  indegree[*it]--;
+                  // Again if indegree become zero we push it into queue
+                  if(indegree[*it]==0){
+                        q.push(*it);
+                  }
+            }
+      }
+      return result;
+}
+int main(){
+      ios_base::sync_with_stdio(0);
+      cin.tie(0);
+      cout.tie(0);
+      
+      int size; // Total no of Node from 0 to size-1;
+      cin>>size;
+      vector<int> graph[size];
+      int m;       // No of edges between nodes
+      cin>>m;  
+      for(int i=0;i<m;i++){
+            int start,end;
+            cin>>start>>end;
+            graph[start].push_back(end);
+      }
+      vector<int> result=topological_sort(graph,size);
+      if(result.size()!=size){
+            cout<<"Topological sort is not possible"<<endl;
+            //Means Cycle exist in directed graph
+      }
+      else{
+            cout<<"Topological sort using Kahn's algorithms"<<endl;
+            for(int i=0;i<result.size();i++){
+                  cout<<result[i]<<" ";
+            }
+      }
+      return 0;
+}
+ 
