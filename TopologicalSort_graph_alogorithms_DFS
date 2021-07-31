@@ -1,0 +1,39 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+      //..........Using DFS method............//
+      
+void topological_sort(vector<int> graph[],vector<bool>& visited, vector<int>& result,int node){
+      visited[node]=true; // Mark node as visited
+      for(auto it=graph[node].begin();it!=graph[node].end();it++){
+            if(!visited[*it]){
+                  topological_sort(graph,visited,result,*it);
+            }
+      }
+      // Add node to result vector
+      result.push_back(node);
+}
+int main(){
+      ios_base::sync_with_stdio(0);
+      cin.tie(0);
+      cout.tie(0);
+      
+      int size; // Total no of Node from 0 to size-1;
+      cin>>size;
+      vector<int> graph[size];
+      int m;       // No of edges between nodes
+      cin>>m;  
+      for(int i=0;i<m;i++){
+            int start,end;
+            cin>>start>>end;
+            graph[start].push_back(end);
+      }
+      vector<bool> visited(size,false); //Check whether a node is visited or not
+      vector<int> result; //here we store answer 
+      topological_sort(graph,visited,result,0);
+      for(int i=result.size()-1;i>=0;i--){
+            cout<<result[i]<<" ";
+      }
+      return 0;
+}
+ 
