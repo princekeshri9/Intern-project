@@ -1,0 +1,54 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+        .........// Dijkastra's Algorithms //..................
+        // This is a greedy algorithms //
+        
+vector<int> dijkstra(vector<vector<pair<int,int>>> adj,int start){
+      // In dist we store distance of node from start(node)
+      vector<int> dist(adj.size(),INT_MAX);
+      
+      // first element of priority queue will be minimum
+      priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+      
+      // distance of node zero from start node is 0 because start node is 0
+      dist[start]=0;
+      pq.push({start,0});
+      
+      while(!pq.empty()){
+            // Get minimum distance from pq
+            int u=pq.top().first;
+            pq.pop();
+            
+            for(int i=0;i<adj[u].size();i++){
+                  int v=adj[u][i].first;
+                  int weight=adj[u][i].second;
+                  
+                  if(dist[v] > dist[u] + weight){
+                        dist[v]=dist[u]+weight;
+                        pq.push({v,dist[v]});
+                  }
+            }
+      }
+      return dist;
+}
+int main(){
+      int node,edges,source;
+      cin>>node>>edges>>source;
+      
+      vector<vector<pair<int,int>>> adj(node);
+      for(int i=0;i<edges;i++){
+            int u,v,w;
+            cin>>u>>v>>w; // w=wight of edges between u and v
+            adj[u].push_back({v,w});
+            adj[v].push_back({u,w});
+      }
+      
+      vector<int> dist = dijkstra(adj,source);
+      
+      for(int i=0;i<node;i++){
+            cout<<"distance between "<<source<<" to node "<<i<<" "<<dist[i]<<endl;
+      }
+      
+      return 0;
+}
