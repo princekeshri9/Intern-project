@@ -1,0 +1,72 @@
+#include<bits/stdc++.h>
+using namespace std;
+      
+      //.............Implementation of priority queue.................//
+int size;
+int leftchild(int i){
+      return 2*i;
+}
+int rightchild(int i){
+      return 2*i+1;
+}
+int parent(int i){
+      return i/2;
+}
+
+void shiftdown(int a[],int i){
+      int maxindex=i;
+      int l,r;
+      l=leftchild(i);r=rightchild(i);
+      
+      if(l<=size and a[l]>a[maxindex])maxindex=l;
+      if(r<=size and a[r]>a[maxindex])maxindex=r;
+      
+      if(i!=maxindex){
+            swap(a[i],a[maxindex]);
+            shiftdown(a,maxindex);
+      }
+}
+void buildheap(int a[],int size){
+      for(int i=size/2;i>=1;i--){
+            shiftdown(a,i);
+      }
+}
+void shiftup(int a[],int i){
+      while(i>1 and a[parent(i)]<a[i]){
+            swap(a[parent(i)],a[i]);
+            i=parent(i);
+      }
+}
+void getmax(int a[]){
+      cout<<a[1]<<endl;
+      return;
+}
+void pop(int a[]){
+      a[1]=a[size];
+      size--;
+      shiftdown(a,1);
+}
+void push(int a[],int num){
+      size++;
+      a[size]=num;
+      shiftup(a,size);
+}
+int main(){
+      int n;
+      cin>>n;
+      size=n;
+      int a[2*n+1];
+      
+      for(int i=1;i<=n;i++){
+            cin>>a[i];
+      }
+      
+      buildheap(a,size);
+      getmax(a);
+      pop(a);
+      getmax(a);
+      pop(a);
+      getmax(a);
+      
+      return 0;
+}
