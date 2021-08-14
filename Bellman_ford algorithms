@@ -1,0 +1,53 @@
+#include<bits/stdc++.h>
+using namespace std;
+      //......Bellman-ford algorithms........//
+      //..used to detect negative weight cycle in graph...//
+      
+bool bellman_ford(map<pair<int,int>,int>&m,vector<int>&dist,int node){
+      for(int i=1;i<node;i++){
+            for(auto it=m.begin();it!=m.end();it++){
+                  pair<int,int> p=it->first;
+                  int u=p.first,v=p.second,w=it->second;
+                  if(dist[v]>dist[u]+w){
+                        dist[v]=dist[u]+w;
+                  }
+            }
+      }
+      
+      for(auto it=m.begin();it!=m.end();it++){
+            pair<int,int> p1=it->first;
+            int u=p1.first,v=p1.second,w=it->second;
+            if(dist[v] > dist[u] + w){
+                  return false;
+            }
+      }
+      return true;
+}
+int main(){
+      int node,edges;
+      cin>>node>>edges;
+      
+      map<pair<int,int>,int> m;
+      for(int i=0;i<edges;i++){
+            int u,v,w;
+            cin>>u>>v>>w;
+            m[{u,v}]=w;
+      }
+      
+      vector<int> dist(node,INT_MAX);
+      dist[0]=0;
+      
+      bool res=bellman_ford(m,dist,node);
+      
+      if(!res){
+            cout<<"Negative-weight cycle exists"<<endl;
+      }
+      else{
+            cout<<"Shortest path distance from start vertex (0): "<<endl;
+            for(int i=0;i<node;i++){
+                  cout<<"0-"<<i<<":"<<dist[i]<<endl;
+            }
+      }
+      
+      return 0;
+}
